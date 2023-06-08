@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Gerenciamento de Usuários</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+    }
+    
+    .container {
+      max-width: 400px;
+      margin: 100px auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- Tela de Autenticação (Login) -->
+  <div id="login" class="container">
+    <h2>Login</h2>
+    <form>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" placeholder="Informe o email">
+      </div>
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input type="password" class="form-control" id="password" placeholder="Informe a senha">
+      </div>
+      <button type="submit" class="btn btn-primary">Entrar</button>
+    </form>
+    <p>Não possui uma conta? <a href="#signup">Crie uma agora!</a></p>
+  </div>
+
+  <!-- Tela de Cadastro de Usuário -->
+  <div id="signup" class="container" style="display: none;">
+    <h2>Cadastro de Usuário</h2>
+    <form>
+      <div class="form-group">
+        <label for="name">Nome</label>
+        <input type="text" class="form-control" id="name" placeholder="Informe o nome">
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" placeholder="Informe o email">
+      </div>
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input type="password" class="form-control" id="password" placeholder="Informe a senha">
+      </div>
+      <button type="submit" class="btn btn-primary">Cadastrar</button>
+    </form>
+    <p>Já possui uma conta? <a href="#login">Faça login!</a></p>
+  </div>
+
+  <!-- Tela de Gestão Administrativa -->
+  <div id="admin" class="container" style="display: none;">
+    <h2>Gestão Administrativa</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Exemplo de usuário existente -->
+        <tr>
+          <td>John Doe</td>
+          <td>johndoe@example.com</td>
+          <td>
+            <button class="btn btn-sm btn-primary">Editar</button>
+            <button class="btn btn-sm btn-danger">Excluir</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  <button id="btn-back" class="btn btn-secondary">Voltar</button>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script>
+
+function goBackToLogin() {
+  showScreen('login');
+}
+
+
+document.getElementById('btn-back').addEventListener('click', goBackToLogin);
+
+
+    function showScreen(screenId) {
+      document.querySelectorAll('.container').forEach(function(container) {
+        container.style.display = 'none';
+      });
+      document.getElementById(screenId).style.display = 'block';
+    }
+
+
+    document.querySelector('a[href="#signup"]').addEventListener('click', function(e) {
+      e.preventDefault();
+      showScreen('signup');
+    });
+
+    document.querySelector('a[href="#login"]').addEventListener('click', function(e) {
+      e.preventDefault();
+      showScreen('login');
+    });
+
+
+    document.querySelector('#login form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      showScreen('admin');
+    });
+
+    document.querySelector('#signup form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      showScreen('admin');
+    });
+
+
+    document.querySelectorAll('#admin .btn-primary').forEach(function(button) {
+      button.addEventListener('click', function() {
+        var userRow = button.parentNode.parentNode;
+        var name = userRow.cells[0].innerHTML;
+        var email = userRow.cells[1].innerHTML;
+        document.getElementById('edit-name').value = name;
+        document.getElementById('edit-email').value = email;
+        showScreen('edit-user');
+      });
+    });
+
+
+    document.querySelectorAll('#admin .btn-danger').forEach(function(button) {
+      button.addEventListener('click', function() {
+        var userId = button.parentNode.parentNode.dataset.userId;
+        button.parentNode.parentNode.remove();
+      });
+    });
+
+    showScreen('login');
+  </script>
+</body>
+</html>
